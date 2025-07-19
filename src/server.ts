@@ -6,7 +6,9 @@ let server: Server;
 
 const startServer = async () => {
     try {
-        await mongoose.connect("mongodb+srv://ph-tour-management-system:kxrC6SFgRZa0FrPj@cluster0.i1uhr.mongodb.net/ph-tour-management?retryWrites=true&w=majority&appName=Cluster0")
+        await mongoose.connect("mongodb+srv://mongo-node:dgJ3etpgU2DLF31x@cluster0.i1uhr.mongodb.net/ph-tour-management?retryWrites=true&w=majority&appName=Cluster0")
+        console.log("Connected To DataBase");
+        
         server = app.listen(5000, () => {
             console.log("Server is Running");
         })
@@ -16,4 +18,3 @@ const startServer = async () => {
 }
 
 startServer();
-
