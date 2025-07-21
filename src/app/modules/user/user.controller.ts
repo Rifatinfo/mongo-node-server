@@ -6,20 +6,16 @@ import { sendResponse } from "../middleswares/sendResponse";
 
 const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserServices.createUser(req.body);
-    res.status(StatusCodes.CREATED).json({
-        message: "User Created Successfully",
-        user
+    sendResponse(res , {
+        success : true,
+        statusCode : StatusCodes.CREATED,
+        message : "User Created Successfully",
+        data : user
     })
 })
 
 const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const users = await UserServices.getAllUsers();
-    // res.status(StatusCodes.OK).json({
-    //     success: true,
-    //     message: "Users fetched successfully",
-    //     users
-    // })
-
     sendResponse(res , {
         success : true,
         statusCode : StatusCodes.OK,
