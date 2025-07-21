@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export interface IAuthProvider {
-    provider : string,
+    provider : "google" | "credential",
     providerId : string
 }
 export enum Role {
