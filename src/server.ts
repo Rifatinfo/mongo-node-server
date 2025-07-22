@@ -1,6 +1,7 @@
 import { Server } from 'http';
 import mongoose from "mongoose";
 import app from './app';
+import { seedSuperAdmin } from './app/modules/utiles/seedAdminUser';
 let server: Server;
 
 
@@ -17,4 +18,8 @@ const startServer = async () => {
     }
 }
 
-startServer();
+
+(async () => {
+    await startServer();
+    await seedSuperAdmin();
+})()
