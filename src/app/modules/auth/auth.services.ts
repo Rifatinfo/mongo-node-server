@@ -3,8 +3,7 @@ import AppError from "../../errorHelpers/AppError";
 import { IUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../utiles/jwt";
-import { envVars } from "../config/env";
+import { createUserToken } from "../utiles/userToken";
 
 const credentialLogin = async (payload: Partial<IUser>) => {
     const { email, password } = payload;
@@ -17,14 +16,19 @@ const credentialLogin = async (payload: Partial<IUser>) => {
         throw new AppError(StatusCodes.BAD_REQUEST, "Incorrect Password", "");
     }
     
-    const jwtPayload = {
-        userId : isUserExist._id,
-        email : isUserExist.email,
-        role : isUserExist.role
-    }
-    const accessToken = generateToken(jwtPayload, envVars.JWT_ACCESS_SECRET, envVars.JWT_ACCESS_EXPIRES)
+    // const jwtPayload = {
+    //     userId : isUserExist._id,
+    //     email : isUserExist.email,
+    //     role : isUserExist.role
+    // }
+    // const accessToken = generateToken(jwtPayload, envVars.JWT_ACCESS_SECRET, envVars.JWT_ACCESS_EXPIRES)
+    // const refreshToken = generateToken(jwtPayload, envVars.JWT_REFRESH_SECRET, envVars.JWT_REFRESH_EXPIRES);
+    const userToken = createUserToken(isUserExist);
+     const { password: pass, ...rest } = isUserExist.toObject();
     return {
-      accessToken
+        accessToken: userToken.accessToken,
+        refreshToken: userToken.refreshToken,
+        user: rest
     }
 }
 
