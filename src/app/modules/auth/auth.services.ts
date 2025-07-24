@@ -3,7 +3,7 @@ import AppError from "../../errorHelpers/AppError";
 import { IUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import bcrypt from "bcryptjs";
-import { createUserToken } from "../utiles/userToken";
+import { createNewAccessTokenWithRefreshToken, createUserToken } from "../utiles/userToken";
 
 const credentialLogin = async (payload: Partial<IUser>) => {
     const { email, password } = payload;
@@ -32,6 +32,14 @@ const credentialLogin = async (payload: Partial<IUser>) => {
     }
 }
 
+const getNewAccessToken = async (refreshToken: string) => {
+    const newAccessToken = await createNewAccessTokenWithRefreshToken(refreshToken)
+    return {
+        accessToken: newAccessToken.accessToken, 
+    };
+}
+
 export const AuthService = {
     credentialLogin,    
+    getNewAccessToken
 }
