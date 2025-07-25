@@ -47,7 +47,7 @@ const resetPassword = async (oldPassword: string, newPassword : string, decodedT
       throw new AppError(StatusCodes.FORBIDDEN, "Password is not match");
     }
     user!.password = await bcrypt.hash(newPassword, Number(envVars.BCRYPT_SALT_ROUND));
-    user!.save();
+    await user!.save();
 }
 
 export const AuthService = {
