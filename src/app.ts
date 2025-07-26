@@ -4,12 +4,23 @@ import { router } from "./app/modules/routes";
 import { globalErrorHandler } from "./app/modules/middleswares/globalErrorHandlers";
 import notFound from "./app/modules/middleswares/notFound";
 import cookieParser from "cookie-parser";
-
+import passport from "passport"
+import session from 'express-session';
+import './app/modules/config/passport'
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+
+app.use(session({
+    secret : "YvG7p!k2B*e1zW9@RmL#hQz3",
+    resave : false,
+    saveUninitialized : false
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/v1", router);
 
@@ -17,7 +28,7 @@ app.get("/", (req: Request , res : Response) => {
     res.status(200).json({
         message : "Welcome to Mongo Node Server"
     })
-})
+});
 
 app.use(globalErrorHandler);
 app.use(notFound);  
