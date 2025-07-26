@@ -12,7 +12,11 @@ interface EnvConfig {
   SUPER_ADMIN_EMAIL: string,
   SUPER_ADMIN_PASSWORD: string,
   JWT_REFRESH_SECRET: string,
-  JWT_REFRESH_EXPIRES: string
+  JWT_REFRESH_EXPIRES: string,
+  GOOGLE_CLIENTS_SECRET : string,
+  GOOGLE_CLIENTS_ID : string,
+  GOOGLE_CALLBACK_URL : string,
+  FRONTEND_URL : string
 }
 
 const loadEnvVariable = (): EnvConfig => {
@@ -33,7 +37,11 @@ const loadEnvVariable = (): EnvConfig => {
     SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL as string,
     SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
     JWT_REFRESH_SECRET : process.env.JWT_REFRESH_SECRET as string,
-    JWT_REFRESH_EXPIRES : process.env.JWT_REFRESH_EXPIRES as string
+    JWT_REFRESH_EXPIRES : process.env.JWT_REFRESH_EXPIRES as string,
+    GOOGLE_CLIENTS_SECRET : process.env.GOOGLE_CLIENTS_SECRET as string,
+    GOOGLE_CLIENTS_ID : process.env.GOOGLE_CLIENTS_ID as string,
+    GOOGLE_CALLBACK_URL : process.env.GOOGLE_CALLBACK_URL as string,
+    FRONTEND_URL : process.env.FRONTEND_URL as string
   }
 }
 
