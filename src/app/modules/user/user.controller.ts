@@ -3,8 +3,6 @@ import { StatusCodes } from 'http-status-codes';
 import { UserServices } from "./user.services";
 import { catchAsync } from "../middleswares/catchAsync";
 import { sendResponse } from "../middleswares/sendResponse";
-import { verifyToken } from "../utiles/jwt";
-import { envVars } from "../config/env";
 import { JwtPayload } from "jsonwebtoken";
 
 const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +19,7 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     const userId = req.params.id;
     const verifiedToken = req.user;
     const payload = req.body;
-    const user = await UserServices.updateUser(userId, payload, verifiedToken);
+    const user = await UserServices.updateUser(userId, payload, verifiedToken as JwtPayload);
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.CREATED,
