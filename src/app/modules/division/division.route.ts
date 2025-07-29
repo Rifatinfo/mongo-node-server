@@ -8,4 +8,5 @@ import { DivisionController } from "./division.controller";
 const router = Router();
 router.post("/create", checkAuth(Role.ADMIN, Role.SUPER_ADMIN), validationRequest(createDivisionSchema), DivisionController.createDivision);
 
+
 export const DivisionRoutes = router
