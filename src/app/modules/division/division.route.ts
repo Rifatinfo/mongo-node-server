@@ -4,9 +4,13 @@ import { Role } from "../user/user.interface";
 import { validationRequest } from "../middleswares/validationRequest";
 import { createDivisionSchema } from "./division.validation";
 import { DivisionController } from "./division.controller";
+import { updateUserZodSchema } from "../user/user.validation";
 
 const router = Router();
 router.post("/create", checkAuth(Role.ADMIN, Role.SUPER_ADMIN), validationRequest(createDivisionSchema), DivisionController.createDivision);
+router.patch("/:id", checkAuth(Role.ADMIN , Role.SUPER_ADMIN), validationRequest(updateUserZodSchema), DivisionController.updateDivision);
+router.get("/", DivisionController.getAllDivisions);
+router.get("/:slug", DivisionController.getSingleDivision);
+router.delete("/:id", checkAuth(Role.ADMIN, Role.SUPER_ADMIN), DivisionController.deleteDivision);
 
-
-export const DivisionRoutes = router
+export const DivisionRoutes = router;
