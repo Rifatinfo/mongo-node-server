@@ -1,4 +1,4 @@
-
+import { excludedField, tourSearchableField } from "./constrain";
 import { ITour, ITourType } from "./tour.interface";
 import { Tour, TourType } from "./tour.model";
 
@@ -11,27 +11,33 @@ const createTour = async (payload: ITour) => {
     }
 
     const tour = await Tour.create(payload)
-
     return tour;
 };
 
-const getAllTours = async (query : Record< string, string>) => {
-   const filter = query;
-   console.log(filter);
-   const searchTerm = query.searchTerm || "";
-   const tourSearchableField = ["title", "description", "location"]
-   delete filter["searchTerm"];
-   const searchArray = {
-    $or: tourSearchableField.map(field => ({[field] : {$regex : searchTerm, $options: "i"}}))
-   }
-   const tours = await Tour.find(searchArray).find(filter);
-   const totalTours = await Tour.countDocuments();
-   return {
-    data : tours,
-    meta : {
-        total : totalTours
+const getAllTours = async (query: Record<string, string>) => {
+    const filter = query;
+    console.log(filter);
+    const searchTerm = query.searchTerm || "";
+    const sort = query.sort || "createdAt";
+    /** const excludedField = ["searchTerm", "sort"];  */
+    const fields = query.fields?.split(",").join(" ") || "";
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
+    const skip = (page - 1) * limit;
+    for (const field of excludedField) {
+        delete filter[field];
     }
-   }
+    const searchArray = {
+        $or: tourSearchableField.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } }))
+    }
+    const tours = await Tour.find(searchArray).find(filter).sort(sort).select(fields).skip(skip).limit(limit);
+    const totalTours = await Tour.countDocuments();
+    return {
+        data: tours,
+        meta: {
+            total: totalTours
+        }
+    }
 }
 
 /** Tour Types */
@@ -42,7 +48,7 @@ const createTourType = async (payload: ITourType) => {
         throw new Error("Tour type already exists.");
     }
 
-      return await TourType.create({ name: payload.name });
+    return await TourType.create({ name: payload.name });
 };
 
 export const TourService = {
