@@ -32,11 +32,16 @@ const getAllTours = async (query: Record<string, string>) => {
     }
     const tours = await Tour.find(searchArray).find(filter).sort(sort).select(fields).skip(skip).limit(limit);
     const totalTours = await Tour.countDocuments();
+    const totalPage = Math.ceil(totalTours/limit); 
+    const meta = {
+        page : page,
+        limit : limit,
+        total : totalTours,
+        totalPage : totalPage 
+    }
     return {
         data: tours,
-        meta: {
-            total: totalTours
-        }
+        meta: meta
     }
 }
 
