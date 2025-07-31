@@ -17,7 +17,14 @@ const createTour = async (payload: ITour) => {
 
 const getAllTours = async (query : Record< string, string>) => {
    const filter = query;
-   const tours = await Tour.find(filter);
+   console.log(filter);
+   const searchTerm = query.searchTerm || "";
+   const tourSearchableField = ["title", "description", "location"]
+   delete filter["searchTerm"];
+   const searchArray = {
+    $or: tourSearchableField.map(field => ({[field] : {$regex : searchTerm, $options: "i"}}))
+   }
+   const tours = await Tour.find(searchArray).find(filter);
    const totalTours = await Tour.countDocuments();
    return {
     data : tours,
