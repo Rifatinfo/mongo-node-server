@@ -1,9 +1,10 @@
-import { excludedField, tourSearchableField } from "./constrain";
+import { tourSearchableField } from "./constrain";
 import { ITour, ITourType } from "./tour.interface";
 import { Tour, TourType } from "./tour.model";
+import { QueryBuilder } from "../utiles/QueryBuilder";
+
 
 /** Tour  */
-
 const createTour = async (payload: ITour) => {
     const existingTour = await Tour.findOne({ title: payload.title });
     if (existingTour) {
@@ -14,12 +15,15 @@ const createTour = async (payload: ITour) => {
     return tour;
 };
 
+
+
 const getAllTours = async (query: Record<string, string>) => {
-    const filter = query;
+    /**
+     * const filter = query;
     console.log(filter);
     const searchTerm = query.searchTerm || "";
     const sort = query.sort || "createdAt";
-    /** const excludedField = ["searchTerm", "sort"];  */
+    /** const excludedField = ["searchTerm", "sort"];  
     const fields = query.fields?.split(",").join(" ") || "";
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
@@ -27,21 +31,37 @@ const getAllTours = async (query: Record<string, string>) => {
     for (const field of excludedField) {
         delete filter[field];
     }
-    const searchArray = {
-        $or: tourSearchableField.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } }))
-    }
-    const tours = await Tour.find(searchArray).find(filter).sort(sort).select(fields).skip(skip).limit(limit);
-    const totalTours = await Tour.countDocuments();
-    const totalPage = Math.ceil(totalTours/limit); 
-    const meta = {
-        page : page,
-        limit : limit,
-        total : totalTours,
-        totalPage : totalPage 
-    }
+     */
+
+    const queryBuilder = new QueryBuilder(Tour.find(), query);
+    const tours = await queryBuilder
+        .search(tourSearchableField)
+        .sort()
+        .paginate()
+        .fields()
+        .filter()
+
+    console.log(queryBuilder);
+    
+    const [data, meta] = await Promise.all([
+        tours.build(),
+        queryBuilder.getMeta()
+    ])
+    // const searchArray = {
+    //     $or: tourSearchableField.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } }))
+    // }
+    // const tours = await Tour.find(searchArray).find(filter).sort(sort).select(fields).skip(skip).limit(limit);
+    // const totalTours = await Tour.countDocuments();
+    // const totalPage = Math.ceil(totalTours / limit);
+    // const meta = {
+    //     page: page,
+    //     limit: limit,
+    //     total: totalTours,
+    //     totalPage: totalPage
+    // }
     return {
-        data: tours,
-        meta: meta
+        data,
+        meta 
     }
 }
 
