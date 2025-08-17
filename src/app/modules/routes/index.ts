@@ -3,6 +3,7 @@ import { UserRoutes } from "../user/user.route";
 import { AuthRoutes } from "../auth/auth.route";
 import { DivisionRoutes } from "../division/division.route";
 import { TourRoutes } from "../tour/tour.route";
+import { OTPRouters } from "../otp/otp.routes";
 
 
 export const router = Router();
@@ -14,6 +15,10 @@ const modulesRoutes = [
     {
         path: "/tour",
         route: TourRoutes
+    },
+    {
+        path : "/otp",
+        route : OTPRouters
     }
 ];
 
