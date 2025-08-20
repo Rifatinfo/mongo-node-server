@@ -63,7 +63,7 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken:
 }
 
 const getAllUsers = async () => {
-    const users = await User.find();
+    const users = await User.findOne();
     const totalUser = await User.countDocuments();
 
     return {
