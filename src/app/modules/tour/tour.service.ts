@@ -2,6 +2,8 @@ import { tourSearchableField } from "./constrain";
 import { ITour, ITourType } from "./tour.interface";
 import { Tour, TourType } from "./tour.model";
 import { QueryBuilder } from "../utiles/QueryBuilder";
+import { catchAsync } from "../middleswares/catchAsync";
+import { Request, Response } from "express";
 
 
 /** Tour  */
@@ -76,9 +78,13 @@ const createTourType = async (payload: ITourType) => {
     return await TourType.create({ name: payload.name });
 };
 
+const getAllToursTypes = async () => {
+    return await TourType.find();
+}
+
 export const TourService = {
     createTour,
     createTourType,
-    getAllTours
-
+    getAllTours,
+    getAllToursTypes
 };

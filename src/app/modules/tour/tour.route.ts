@@ -14,6 +14,8 @@ router.post(
     validationRequest(createTourTypeZodSchema),
     TourController.createTourType
 );
+router.get("/tour-types", TourController.getAllTourTypes);
+
  /** Tour  */
 router.post(
     "/create",

@@ -7,6 +7,6 @@ import { checkAuth } from "../middleswares/checkAuth";
 
 const router = Router();
 router.post("/register", validationRequest(createUserZodSchema), UserController.createUser);
-router.get("/all-users", checkAuth(Role.ADMIN, Role.SUPER_ADMIN) , UserController.getAllUsers);
+router.get("/all-users",  checkAuth(...Object.values(Role)) , UserController.getAllUsers);
 router.patch("/:id", validationRequest(updateUserZodSchema) , checkAuth(...Object.values(Role)), UserController.updateUser);
 export const UserRoutes = router;

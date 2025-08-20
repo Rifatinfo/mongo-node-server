@@ -7,10 +7,14 @@ import cookieParser from "cookie-parser";
 import passport from "passport"
 import session from 'express-session';
 import './app/modules/config/passport'
+import { envVars } from "./app/modules/config/env";
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: envVars.FRONTEND_URL,
+    credentials: true
+}))
 app.use(cookieParser());
 
 app.use(session({
