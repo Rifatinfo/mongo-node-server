@@ -25,7 +25,10 @@ interface EnvConfig {
   SMTP_HOST: string,
   SMTP_PORT: string,
   SMTP_USER: string,
-  SMTP_FROM: string
+  SMTP_FROM: string,
+  CLOUDINARY_CLOUD_NAME: string,
+  CLOUDINARY_API_KEY: string,
+  CLOUDINARY_API_SECRET: string
 }
 
 const loadEnvVariable = (): EnvConfig => {
@@ -59,7 +62,10 @@ const loadEnvVariable = (): EnvConfig => {
     SMTP_HOST: process.env.SMTP_HOST as string,
     SMTP_PORT: process.env.SMTP_PORT as string,
     SMTP_USER: process.env.SMTP_USER as string,
-    SMTP_FROM: process.env.SMTP_FROM as string
+    SMTP_FROM: process.env.SMTP_FROM as string,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string
   }
 }
 
