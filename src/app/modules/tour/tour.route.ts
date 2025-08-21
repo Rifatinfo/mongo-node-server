@@ -15,6 +15,7 @@ router.post(
     TourController.createTourType
 );
 router.get("/tour-types", TourController.getAllTourTypes);
+router.delete("/tour-types/:id", checkAuth(Role.ADMIN, Role.SUPER_ADMIN),TourController.deleteTourType);
 
  /** Tour  */
 router.post(

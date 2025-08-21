@@ -82,9 +82,19 @@ const getAllToursTypes = async () => {
     return await TourType.find();
 }
 
+const deleteTourType = async (id : string) => {
+  const existingTourType = await TourType.findById(id);
+  if(!existingTourType){
+      throw new Error("Tour type not found ");
+  }
+
+  return await TourType.findByIdAndDelete(id);
+}
+
 export const TourService = {
     createTour,
     createTourType,
     getAllTours,
-    getAllToursTypes
+    getAllToursTypes,
+    deleteTourType 
 };
