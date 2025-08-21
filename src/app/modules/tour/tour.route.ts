@@ -4,6 +4,7 @@ import { validationRequest } from "../middleswares/validationRequest";
 import { createTourTypeZodSchema, createTourZodSchema } from "./tour.validation";
 import { TourController } from "./tour.controller";
 import express from "express";
+import { multerUpload } from "../config/multer.config";
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ router.delete("/tour-types/:id", checkAuth(Role.ADMIN, Role.SUPER_ADMIN),TourCon
 router.post(
     "/create",
     checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+    multerUpload.array("files"),
     validationRequest(createTourZodSchema),
     TourController.createTour
 );
